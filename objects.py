@@ -70,10 +70,12 @@ def calc_vertices(center_coords, num_sides, circumradius):
         curr_angle += 360/num_sides
     return vertices
 
-def calc_vertex_coord(cent_coords, curr_angle, circrad, vertex_num, num_vertices): 
+def calc_vertex_coord(cent_coords, curr_angle, circrad, vertex_num, num_vertices):
     x, y = cent_coords
-    cos_comp = circrad * math.cos((2*math.pi*vertex_num)/num_vertices)
-    sin_comp = circrad * math.sin((2*math.pi*vertex_num)/num_vertices)
-    x += cos_comp
-    y += sin_comp
+    # calculate angle degree
+    # converted to radians, hopefully this will fix the issues with it looking weird
+    angle_rad = math.radians(curr_angle)
+    # update x and y based on sin and cosine
+    x += circrad * math.cos(angle_rad)
+    y -= circrad * math.sin(angle_rad)
     return (x, y)

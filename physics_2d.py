@@ -8,8 +8,8 @@ def update_positions(objects):
         # call necessary functions, update x and y at the end with set_coords object function
         # i just filled in some random code here to check if the objects were updating on the canvas and demo how to use get_coords and set_coords
         x, y = object.get_coords()
-        x -= 10
-        y -= 10
+        x -= 1
+        y -= 1
         # set_coords method takes a tuple
         coords = (x, y)
         object.set_coords(coords)
