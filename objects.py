@@ -32,6 +32,15 @@ class Circle(Object):
     def draw(self, surface): 
         pygame.draw.circle(surface, self.color, (self.x, self.y), self.radius)
 
+    def to_dict(self):
+        return {
+            'type': 'Circle',
+            'x': self.x,
+            'y': self.y,
+            'radius': self.radius,
+            'color': f"rgb({self.color[0]},{self.color[1]},{self.color[2]})"
+        }
+
 class Square(Object): 
     def __init__(self, side, coords, color): 
         super().__init__(coords, color)
@@ -39,6 +48,15 @@ class Square(Object):
     
     def draw(self, surface): 
         pygame.draw.rect(surface, self.color, (self.x, self.y, self.side, self.side))
+
+    def to_dict(self):
+        return {
+            'type': 'Square',
+            'x': self.x,
+            'y': self.y,
+            'side': self.side,
+            'color': f"rgb({self.color[0]},{self.color[1]},{self.color[2]})"
+        }
 
 class Polygon(Object): 
     # circumradius = distance from center to vertices
@@ -60,6 +78,13 @@ class Polygon(Object):
     
     def draw(self, surface): 
         pygame.draw.polygon(surface, self.color, self.vertices)
+
+    def to_dict(self):
+        return {
+            'type': 'Polygon',
+            'vertices': self.vertices,
+            'color': f"rgb({self.color[0]},{self.color[1]},{self.color[2]})"
+        }
 
 def calc_vertices(center_coords, num_sides, circumradius): 
     # for the draw function later, and just to have

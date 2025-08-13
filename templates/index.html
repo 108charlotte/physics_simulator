@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2D Physics Simulator</title>
+    <style>
+        #canvas {
+            border: 2px solid black; 
+        }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+        const socket = io()
+        const canvas = document.getElementById('canvas')
+        const ctx = canvas.getContext('2d')
+
+        socket.on('object_update', function(objects) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (const obj of objects) {
+                if (obj.type === 'Circle') {
+                    ctx.beginPath();
+                    ctx.arc(obj.x, obj.y, obj.radius, 0, 2 * Math.PI);
+                    ctx.fillStyle = obj.color;
+                    ctx.fill();
+                    ctx.stroke();
+                }
+                else if (obj.type === 'Square') {
+                    ctx.fillStyle = obj.color; 
+                    ctx.fillRect(obj.x, obj.y, obj.side, obj.side);
+                }
+                else if (obj.type === 'Polygon') {
+                    ctx.beginPath();
+                    ctx.moveTo(obj.vertices[0][0], obj.vertices[0][1]);
+                    for (let i = 1; i < obj.vertices.length; i++) {
+                        ctx.lineTo(obj.vertices[i][0], obj.vertices[i][1]);
+                    }
+                    ctx.closePath();
+                    ctx.fillStyle = obj.color;
+                    ctx.fill();
+                    ctx.stroke();
+                }
+                }
+            }
+        );
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            socket.emit('mouse_click', {x, y});
+        });
+    </script>
+  </body>
+</html>
