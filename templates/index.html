@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2D Physics Simulator</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+        const socket = io()
+        const canvas = document.getElementById('canvas')
+        const ctx = canvas.getContext('2d')
+
+        socket.on('object_update', function(objects) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (const obj of objects) {
+                if (obj.type === 'Circle') {
+                    ctx.beginPath();
+                    ctx.arc(obj.x, obj.y, obj.radius, 0, 2 * Math.PI);
+                    ctx.fillStyle = obj.color;
+                    ctx.fill();
+                    ctx.stroke();
+                }
+                else if (obj.type === 'Square') {
+                    ctx.fillStyle = this.color; 
+                    ctx.fillRect(this.x, this.y, this.side, this.side);
+                }
+                else if (obj.type === 'Polygon') {
+                    ctx.beginPath();
+                    ctx.moveTo(this.vertices[0][0], this.vertices[0][1]);
+                    for (let i = 1; i < this.vertices.length; i++) {
+                        ctx.lineTo(this.vertices[i][0], this.vertices[i][1]);
+                    }
+                    ctx.closePath();
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                    ctx.stroke();
+                }
+                }
+            }
+        );
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            socket.emit('mouse_click', {x, y});
+        });
+    </script>
+  </body>
+</html>
