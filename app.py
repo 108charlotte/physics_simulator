@@ -24,8 +24,8 @@ def sim_loop():
         freq = 1 / 60
         socketio.sleep(freq)
 
-@app.route('/reset_objects')
-def reset_objects(): 
+@app.route('/reset_objects', methods=['POST'])
+def reset_objects():
     global objects
     objects = []
     return redirect("/")

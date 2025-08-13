@@ -26,3 +26,4 @@ def update_positions(objects):
 # also pls let me know if there is anything else we need to keep track of, like maybe object area, and then if we should change the frame rate
 # we may also need to have a few unit conversion functions so u aren't working with weird units like pixels which aren't really generalizable to the usual formulas
 # the screen is 500 x 500 pixels, and coords are given in relation to that (for calculating like bouncing off of the edges if u want to)
+# pls add some bouncing off walls logic so i can test my reset button! 
