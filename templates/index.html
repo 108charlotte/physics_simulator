@@ -25,17 +25,17 @@
                     ctx.stroke();
                 }
                 else if (obj.type === 'Square') {
-                    ctx.fillStyle = this.color; 
-                    ctx.fillRect(this.x, this.y, this.side, this.side);
+                    ctx.fillStyle = obj.color; 
+                    ctx.fillRect(obj.x, obj.y, obj.side, obj.side);
                 }
                 else if (obj.type === 'Polygon') {
                     ctx.beginPath();
-                    ctx.moveTo(this.vertices[0][0], this.vertices[0][1]);
-                    for (let i = 1; i < this.vertices.length; i++) {
-                        ctx.lineTo(this.vertices[i][0], this.vertices[i][1]);
+                    ctx.moveTo(obj.vertices[0][0], obj.vertices[0][1]);
+                    for (let i = 1; i < obj.vertices.length; i++) {
+                        ctx.lineTo(obj.vertices[i][0], obj.vertices[i][1]);
                     }
                     ctx.closePath();
-                    ctx.fillStyle = this.color;
+                    ctx.fillStyle = obj.color;
                     ctx.fill();
                     ctx.stroke();
                 }

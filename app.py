@@ -22,7 +22,7 @@ def sim_loop():
         update_positions(objects)
 
         socketio.emit('object_update', [obj.to_dict() for obj in objects])
-        freq = 1
+        freq = 1 / 60
         socketio.sleep(freq)
 
 @socketio.on('mouse_click')
