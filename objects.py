@@ -6,7 +6,7 @@ import math
 
 pygame.init()
 
-class Object: 
+class Object(ABC): 
     def __init__(self, coords, color, velocity): 
         # unpack and assign coordinates
         x, y = coords
@@ -26,15 +26,25 @@ class Object:
     
     def get_velocity(self): 
         return self.velocity
+    
+    def set_velocity(self, new_velocity): 
+        self.velocity = new_velocity
 
     @abstractmethod
-    def draw(self, surface): 
+    def get_size(self): 
         pass
 
 class Circle(Object): 
     def __init__(self, radius, coords, color, velocity):
         super().__init__(coords, color, velocity)
         self.radius = radius
+        self.type = "Circle"
+    
+    def get_size(self): 
+        return math.pi * (self.radius**2)
+    
+    def get_radius(self): 
+        return self.radius
     
     def to_dict(self):
         return {
@@ -49,6 +59,10 @@ class Square(Object):
     def __init__(self, side, coords, color, velocity): 
         super().__init__(coords, color, velocity)
         self.side = side
+        self.type = "Square"
+    
+    def get_size(self): 
+        return self.side**2
 
     def to_dict(self):
         return {
@@ -67,6 +81,7 @@ class Polygon(Object):
         self.vertices = vertices
         self.num_sides = num_sides
         self.circumradius = circumradius
+        self.type = "Polygon"
     
     def set_coords(self, new_coords): 
         x, y = new_coords
@@ -77,8 +92,10 @@ class Polygon(Object):
     def get_vertices(self): 
         return self.vertices
     
-    def draw(self, surface): 
-        pygame.draw.polygon(surface, self.color, self.vertices)
+    def get_size(self): 
+        apothem = self.circumradius * math.cos((math.pi/self.num_sides))
+        side_len = (2 * self.circumradius) / self.num_sides
+        return apothem * (side_len * self.num_sides)
 
     def to_dict(self):
         return {

@@ -21,6 +21,7 @@ def sim_loop():
         update_positions(objects)
 
         socketio.emit('object_update', [obj.to_dict() for obj in objects])
+        # update to increase frame rate
         freq = 1 / 60
         socketio.sleep(freq)
 
@@ -43,12 +44,12 @@ def handle_mouse_click(data):
     # generate random object type
     object_type_num = random.randint(1, 3)
     # generate random velocity
-    random_vel_x = random.randint(-10, 10)
-    random_vel_y = random.randint(-10, 10)
+    random_vel_x = random.randint(-1, 1)
+    random_vel_y = random.randint(-1, 1)
 
     while random_vel_x == 0 and random_vel_y == 0: 
-        random_vel_x = random.randint(-10, 10)
-        random_vel_y = random.randint(-10, 10)
+        random_vel_x = random.randint(-1, 1)
+        random_vel_y = random.randint(-1, 1)
     
     # circle
     if object_type_num == 1: 
