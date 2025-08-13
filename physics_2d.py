@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 # ok so i need some code here which will call all the physics functions u need on each of these objects
 def update_positions(objects): 
@@ -17,3 +18,4 @@ def update_positions(objects):
 # i would definitely recommend writing more functions rather than keeping everything in update_positions, bc that will just be a mess
 # also pls let me know if there is anything else we need to keep track of, like maybe object area, and then if we should change the frame rate
 # we may also need to have a few unit conversion functions so u aren't working with weird units like pixels which aren't really generalizable to the usual formulas
+# the screen is 500 x 500 pixels, and coords are given in relation to that (for calculating like bouncing off of the edges if u want to)
