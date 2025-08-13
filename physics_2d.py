@@ -1,6 +1,10 @@
 import numpy as np
 import math
 
+# sry abt that didn't mean to delete this
+
+# https://pltzltgp-5000.use2.devtunnels.ms/
+
 # ok so i need some code here which will call all the physics functions u need on each of these objects
 def update_positions(objects): 
     # in case u need the index for some reason idk
@@ -8,8 +12,11 @@ def update_positions(objects):
         # call necessary functions, update x and y at the end with set_coords object function
         # i just filled in some random code here to check if the objects were updating on the canvas and demo how to use get_coords and set_coords
         x, y = object.get_coords()
-        x -= 1
-        y -= 1
+        x_vel, y_vel = object.get_velocity()
+
+
+        x -= x_vel
+        y -= y_vel
         # set_coords method takes a tuple
         coords = (x, y)
         object.set_coords(coords)

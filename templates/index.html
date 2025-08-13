@@ -13,6 +13,10 @@
   </head>
   <body>
     <canvas id="canvas" width="500" height="500"></canvas>
+    <form action="{{ url_for('reset_objects') }}" method="POST">
+        <button type="submit">Reset</button>
+    </form>
+    <!--adding a flask route to reset the objects list-->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
         const socket = io()

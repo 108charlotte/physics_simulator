@@ -1,13 +1,12 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 from objects import Circle, Square, Polygon
 import random
 import importlib
 from physics_2d import update_positions
 from flask_socketio import SocketIO
-import time
 
 app = Flask(__name__)
-socketio = SocketIO(app)  # Add this line
+socketio = SocketIO(app)
 
 physics_module = importlib.import_module("physics_2d")
 
@@ -25,6 +24,12 @@ def sim_loop():
         freq = 1 / 60
         socketio.sleep(freq)
 
+@app.route('/reset_objects')
+def reset_objects(): 
+    global objects
+    objects = []
+    return redirect("/")
+
 @socketio.on('mouse_click')
 def handle_mouse_click(data): 
     x = data['x']
@@ -37,12 +42,20 @@ def handle_mouse_click(data):
     color = (red_amt, green_amt, blue_amt)
     # generate random object type
     object_type_num = random.randint(1, 3)
+    # generate random velocity
+    random_vel_x = random.randint(-10, 10)
+    random_vel_y = random.randint(-10, 10)
+
+    while random_vel_x == 0 and random_vel_y == 0: 
+        random_vel_x = random.randint(-10, 10)
+        random_vel_y = random.randint(-10, 10)
+    
     # circle
     if object_type_num == 1: 
         # generate random radius
         radius = random.randint(10, 50)
         # create circle object and add to objects list
-        newCircle = Circle(radius, mouse_pos, color)
+        newCircle = Circle(radius, mouse_pos, color, (random_vel_x, random_vel_y))
         objects.append(newCircle)
     # square
     elif object_type_num == 2: 
@@ -54,7 +67,7 @@ def handle_mouse_click(data):
         y -= side/2
         mouse_pos = (x, y)
         # create square object and add to objects list
-        newSquare = Square(side, mouse_pos, color)
+        newSquare = Square(side, mouse_pos, color, (random_vel_x, random_vel_y))
         objects.append(newSquare)
     elif object_type_num == 3: 
         # generate random circumradius
@@ -62,7 +75,7 @@ def handle_mouse_click(data):
         # generate random num sides
         num_sides = random.randint(3, 12)
         # create polygon object and add to objects list
-        newPoly = Polygon(num_sides, circrad, mouse_pos, color)
+        newPoly = Polygon(num_sides, circrad, mouse_pos, color, (random_vel_x, random_vel_y))
         objects.append(newPoly)
 
 @socketio.on('connect')

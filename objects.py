@@ -2,15 +2,19 @@ import pygame
 from abc import ABC, abstractmethod
 import math
 
+# idk what happened to the squares and polygons but the circles are working
+
 pygame.init()
 
 class Object: 
-    def __init__(self, coords, color): 
+    def __init__(self, coords, color, velocity): 
         # unpack and assign coordinates
         x, y = coords
         self.x = x
         self.y = y
         self.color = color
+        # passed as a tuple
+        self.velocity = velocity
     
     def set_coords(self, new_coords): 
         x, y = new_coords
@@ -19,19 +23,19 @@ class Object:
     
     def get_coords(self): 
         return (self.x, self.y)
+    
+    def get_velocity(self): 
+        return self.velocity
 
     @abstractmethod
     def draw(self, surface): 
         pass
 
 class Circle(Object): 
-    def __init__(self, radius, coords, color):
-        super().__init__(coords, color)
+    def __init__(self, radius, coords, color, velocity):
+        super().__init__(coords, color, velocity)
         self.radius = radius
     
-    def draw(self, surface): 
-        pygame.draw.circle(surface, self.color, (self.x, self.y), self.radius)
-
     def to_dict(self):
         return {
             'type': 'Circle',
@@ -42,12 +46,9 @@ class Circle(Object):
         }
 
 class Square(Object): 
-    def __init__(self, side, coords, color): 
-        super().__init__(coords, color)
+    def __init__(self, side, coords, color, velocity): 
+        super().__init__(coords, color, velocity)
         self.side = side
-    
-    def draw(self, surface): 
-        pygame.draw.rect(surface, self.color, (self.x, self.y, self.side, self.side))
 
     def to_dict(self):
         return {
@@ -60,8 +61,8 @@ class Square(Object):
 
 class Polygon(Object): 
     # circumradius = distance from center to vertices
-    def __init__(self, num_sides, circumradius, center_coords, color): 
-        super().__init__(center_coords, color)
+    def __init__(self, num_sides, circumradius, center_coords, color, velocity): 
+        super().__init__(center_coords, color, velocity)
         vertices = calc_vertices(center_coords, num_sides, circumradius)
         self.vertices = vertices
         self.num_sides = num_sides
