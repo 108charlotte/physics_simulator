@@ -1,8 +1,5 @@
-import pygame
 from abc import ABC, abstractmethod
 import math
-
-pygame.init()
 
 class Object: 
     def __init__(self, coords, color): 
